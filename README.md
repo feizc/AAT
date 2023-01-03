@@ -2,6 +2,6 @@ We appologize to the highly relevance to the [paper](https://aclanthology.org/20
 
 We get ready to do the following: 
 
-[] email to the PC to explain the situation
+ [ ] email to the PC to explain the situation
 []
 
