@@ -1,4 +1,4 @@
-This repository includes the materials for 
+This repository includes the materials for Attention-Aligned Transformer for Image Captioning. 
 
 We appologize to the highly relevance about method in the [paper](https://aclanthology.org/2021.acl-long.103.pdf). 
 
