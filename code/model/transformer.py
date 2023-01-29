@@ -25,6 +25,9 @@ class TransformerImageCaption(nn.Module):
         self.language_decoder = GPT2LMHeadModel(language_config) 
     
     def forward(self, image, text, mask): 
+        """
+            return logits, hidden_states, attentions, cross_attentions
+        """
         encoder_outputs = self.vision_encoder(pixel_values=image).last_hidden_state 
         decoder_outputs = self.language_decoder(input_ids=text, 
                                                 attention_mask=mask, 
