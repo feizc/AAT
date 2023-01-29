@@ -34,3 +34,6 @@ class TransformerImageCaption(nn.Module):
                                                 encoder_hidden_states=encoder_outputs)
         return decoder_outputs 
         
+
+
+

@@ -9,7 +9,7 @@ from transformers import ViTFeatureExtractor, GPT2Tokenizer
 
 from split import preprocess_coco 
 from dataset import COCODataset 
-from model import VisionEncoderConfig, LanguageDecoderConfig, TransformerImageCaption
+from model import VisionEncoderConfig, LanguageDecoderConfig, TransformerImageCaption, AttenAlignTransformer 
 
 SPECIAL_TOKENS = ["[bos]", "[eos]",] 
 SPECIAL_TOKENS_DICT = {'bos_token': "[bos]", 'eos_token': "[eos]"}
@@ -32,6 +32,7 @@ def main():
     parser.add_argument("--annotaion_path", type=str, default='/Users/feizhengcong/Desktop/COCO/dataset_coco.json' ) 
     parser.add_argument("--save_path", type=str, default='./ckpt') 
 
+    parser.add_argument("--use_atten_align", type=bool, default=True) 
     parser.add_argument("--batch_size", type=int, default=4) 
     parser.add_argument("--lr", type=float, default=3e-4, help="Learning rate.")
     parser.add_argument("--beta1", type=float, default=0.98, help="Adam beta 1.")
@@ -41,6 +42,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=20, help="Number of epochs.") 
     parser.add_argument("--debug", type=bool, default=True) 
     args = parser.parse_args()
+
 
     if torch.cuda.is_available():
         # This enables tf32 on Ampere GPUs which is only 8% slower than
@@ -66,8 +68,11 @@ def main():
     vision_config = VisionEncoderConfig()
     language_config = LanguageDecoderConfig() 
     language_config.add_cross_attention = True
-    language_config.vocab_size = len(tokenizer)
-    model = TransformerImageCaption(vision_config=vision_config, language_config=language_config)
+    language_config.vocab_size = len(tokenizer) 
+    if args.use_atten_align == True: 
+        model = AttenAlignTransformer(vision_config=vision_config, language_config=language_config)
+    else:
+        model = TransformerImageCaption(vision_config=vision_config, language_config=language_config)
 
     optimizer = optim.AdamW(
         model.parameters(),
